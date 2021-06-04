@@ -1,0 +1,23 @@
+.Dd $Mdocdate$
+.Dt geist section
+.Os
+.Sh NAME
+.Nm geist
+.Nd Transfer the data from stdin to stdout
+.Sh SYNOPSIS
+.Nm geist
+.Op Fl h
+.Sh DECRIPTION
+The
+.Nm
+program transfers data from stdin to stdout. The arguments are as follows:
+.Bl -tag -width Ds
+.It Fl h
+Print the usage help and exits the program.
+.El
+.Sh EXIT STATUS
+Returns EXIT_SUCCESS if successful; EXIT_FAILURE else
+.Sh EXAMPLES
+geist < input.txt > output.txt
+.Sh AUTHORS
+Germar Schlegel
