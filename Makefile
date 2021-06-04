@@ -1,6 +1,8 @@
 SRC = geist.c
 OBJ=$(SRC:.c=.o)
 DEPS= $(OBJ:.o=.d)
+CC=x86_64-elf-gcc
+OBJCOPY=x86_64-elf-objcopy
 
 # compiler flags:
 #  -Wall turns on most, but not all, compiler warnings
@@ -11,17 +13,22 @@ DEPS= $(OBJ:.o=.d)
 #  -Wconversion warn for implicit conversions that may alter a value.
 CFLAGS = -Wall -Wextra -Wpedantic -Wunused-const-variable -Wwrite-strings -Wconversion
 
-geist: $(OBJ)
-	$(CC) $(CFLAGS) -MMD $^ -o $@
+geist: $(SRC)
+	$(CC) -g -Os -static -nostdlib -nostdinc -fno-pie -no-pie -mno-red-zone \
+  -fno-omit-frame-pointer -pg -mnop-mcount \
+  -o $@.com.dbg $^ -fuse-ld=bfd -Wl,-T,cosmo/ape.lds \
+  -include  cosmo/cosmopolitan.h cosmo/crt.o cosmo/ape.o cosmo/cosmopolitan.a
+	$(OBJCOPY) -S -O binary $@.com.dbg $@.com
 
 all: geist
 
 debug: CFLAGS+= -DDEBUG -fsanitize=address -O1 -fno-omit-frame-pointer -g
 debug: geist
 
+
 .PHONY:clean
 clean:
-	rm -f $(OBJ) $(DEPS) geist
+	rm -f $(OBJ) $(DEPS) geist geist.com.dbg geist.com
 
 -include $(DEPS)
 

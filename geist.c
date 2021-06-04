@@ -1,7 +1,4 @@
-#include <stdio.h>
-#include <unistd.h>
-#include <libgen.h>
-#include <stdlib.h>
+#include "cosmo/cosmopolitan.h"
 
 int main(int argc, char* argv[argc]){
     int c;
